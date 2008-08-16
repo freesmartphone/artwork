@@ -3250,5 +3250,368 @@ images {
       }
    }
 
+/////////////////////////////////////////////////////////////////////////////
+   /*** MOD: ILLUME FLAUNCH ***/
+   group {
+      name: "e/modules/flaunch/button/default";
+      parts {
+	 part { name: "base";
+	    type: RECT;
+	    description { state: "default" 0.0;
+	       color: 0 0 0 205;
+	       rel1.offset: 0 0;
+	       rel2.offset: -2 -2;
+	    }
+	 }
+	 part { name: "plus";
+	    type: TEXT;
+	    mouse_events: 0;
+	    description { state: "default" 0.0;
+	       align: 1.0 0.0;
+	       rel1.offset: -2 0;
+	       rel1.relative: 1.0 0.0;
+	       rel2.offset: -2 0;
+	       rel2.relative: 1.0 0.0;
+	       color: 255 255 255 255;
+	       text {
+		  font: "Liberation-Bold";
+		  text: "+";
+		  size: 16;
+		  align: 1.0 0.0;
+		  min: 1 1;
+	       }
+	    }
+	 }
+	 part { name: "e.text.label";
+	    type: TEXT;
+	    mouse_events: 0;
+	    description { state: "default" 0.0;
+	       align: 0.0 1.0;
+	       rel1.offset: 4 -1;
+	       rel1.relative: 0.0 1.0;
+	       rel2.offset: -5 -1;
+	       rel2.relative: 1.0 1.0;
+	       color: 255 255 255 255;
+	       text {
+		  font: "Liberation-Bold";
+		  size: 16;
+		  align: 0.0 1.0;
+		  min: 0 1;
+	       }
+	    }
+	 }
+      }
+      programs {
+	 program { name: "up";
+	    signal: "mouse,up,1";
+	    source: "base";
+            action: SIGNAL_EMIT "e,action,do,select" "";
+	 }
+      }
+   }
+
+   group {
+      name: "e/modules/flaunch/button/start";
+      parts {
+	 part { name: "base";
+	    type: RECT;
+	    description { state: "default" 0.0;
+	       color: 0 0 0 205;
+	       rel1.offset: 0 0;
+	       rel2.offset: -2 -2;
+	    }
+	 }
+	 part { name: "e.text.label";
+	    type: TEXT;
+	    mouse_events: 0;
+	    description { state: "default" 0.0;
+	       align: 0.0 1.0;
+	       rel1.offset: 4 10;
+	       rel1.relative: 0.0 1.0;
+	       rel2.offset: -5 10;
+	       rel2.relative: 1.0 1.0;
+	       color: 255 255 255 255;
+	       text {
+		  font: "Liberation";
+		  size: 32;
+		  align: 0.0 1.0;
+		  min: 0 1;
+	       }
+	    }
+	 }
+      }
+      programs {
+	 program { name: "up";
+	    signal: "mouse,up,1";
+	    source: "base";
+            action: SIGNAL_EMIT "e,action,do,select" "";
+	 }
+      }
+   }
+
+/////////////////////////////////////////////////////////////////////////////
+   /*** MOD: ILLUME SCROLLFRAME ***/
+   group { name: "e/modules/illume/launcher/scrollview";
+      parts {
+/*	 
+	 part { name: "clipper";
+	    type: RECT;
+	    mouse_events: 0;
+	    description { state: "default" 0.0; }
+	 }
+ */
+	 part { name: "e.swallow.content";
+//	    clip_to: "clipper";
+	    type: SWALLOW;
+	    description { state: "default" 0.0; }
+	 }
+/*	 
+	 part {
+	    name: "sb_vbar";
+	    type: RECT;
+	    mouse_events: 0;
+	    description {
+	       state: "default" 0.0;
+	    }
+	    description { state: "hidden" 0.0;
+	       visible: 0;
+	    }
+	 }
+	 part { name: "sb_vbar_base";
+	    type: RECT;
+	    clip_to: "sb_vbar";
+	    mouse_events: 0;
+	    description { state: "default" 0.0;
+	       color: 0 0 0 0;
+	       rel1 {
+		  relative: 1.0  0.0;
+		  offset:   -8    0;
+	       }
+	       rel2 {
+		  relative: 1.0  1.0;
+	       offset:   -1   -9;
+	       }
+	    }
+	 }
+	 part { name: "e.dragable.vbar";
+	    type: RECT;
+	    clip_to: "sb_vbar";
+	    mouse_events: 0;
+	    dragable {
+	       x: 0 0 0;
+	       y: 1 1 0;
+	       confine: "sb_vbar_base";
+	    }
+	    description { state: "default" 0.0;
+	       min: 8 8;
+	       rel1 {
+		  relative: 0.5  0.5;
+		  offset:   0    0;
+		  to: "sb_vbar_base";
+	       }
+	       rel2 {
+		  relative: 0.5  0.5;
+		  offset:   0    0;
+		  to: "sb_vbar_base";
+	       }
+	       color: 255 255 255 160;
+	    }
+	 }
+	 part {
+	    name: "sb_hbar";
+	    type: RECT;
+	    mouse_events: 0;
+	    description {
+	       state: "default" 0.0;
+	    }
+	    description { state: "hidden" 0.0;
+	       visible: 0;
+	    }
+	 }
+	 part { name: "sb_hbar_base";
+	    type: RECT;
+	    clip_to: "sb_hbar";
+	    mouse_events: 0;
+	    description { state: "default" 0.0;
+	       color: 0 0 0 0;
+	       rel1 {
+		  relative: 0.0  1.0;
+		  offset:   0   -8;
+	       }
+	       rel2 {
+		  relative: 1.0  1.0;
+		  offset:   -9   -1;
+	       }
+	    }
+	 }
+	 part { name: "e.dragable.hbar";
+	    type: RECT;
+	    clip_to: "sb_hbar";
+	    mouse_events: 0;
+	    dragable {
+	       x: 1 1 0;
+	       y: 0 0 0;
+	       confine: "sb_hbar_base";
+	    }
+	    description { state: "default" 0.0;
+	       min: 8 8;
+	       rel1 {
+		  relative: 0.5  0.5;
+		  offset:   0    0;
+		  to: "sb_hbar_base";
+	       }
+	       rel2 {
+		  relative: 0.5  0.5;
+		  offset:   0    0;
+		  to: "sb_hbar_base";
+	       }
+	       color: 255 255 255 160;
+	    }
+	 }
+ */
+      }
+      programs {
+/*	 
+	 program {
+	    name: "sb_vbar_show";
+	    signal: "e,action,show,vbar";
+	    source: "e";
+	    action:  STATE_SET "default" 0.0;
+	    target: "sb_vbar";
+	 }
+	 program {
+	    name: "sb_vbar_hide";
+	    signal: "e,action,hide,vbar";
+	    source: "e";
+	    action:  STATE_SET "hidden" 0.0;
+	    target: "sb_vbar";
+	 }
+	 program {
+	    name: "sb_hbar_show";
+	    signal: "e,action,show,hbar";
+	    source: "e";
+	    action:  STATE_SET "default" 0.0;
+	    target: "sb_hbar";
+	 }
+	 program {
+	    name: "sb_hbar_hide";
+	    signal: "e,action,hide,hbar";
+	    source: "e";
+	    action:  STATE_SET "hidden" 0.0;
+	    target: "sb_hbar";
+	 }
+ */
+      }
+   }
+
+/////////////////////////////////////////////////////////////////////////////
+   /*** MOD: ILLUME BUSYCOVER ***/
+   group {
+      name: "e/modules/busycover/default";
+      images {
+	 image: "a-01.png" COMP;
+	 image: "a-02.png" COMP;
+	 image: "a-03.png" COMP;
+	 image: "a-04.png" COMP;
+	 image: "a-05.png" COMP;
+	 image: "a-06.png" COMP;
+	 image: "a-07.png" COMP;
+	 image: "a-08.png" COMP;
+	 image: "a-09.png" COMP;
+	 image: "a-10.png" COMP;
+	 image: "a-11.png" COMP;
+	 image: "a-12.png" COMP;
+	 image: "a-13.png" COMP;
+	 image: "a-14.png" COMP;
+	 image: "a-15.png" COMP;
+	 image: "a-16.png" COMP;
+	 image: "a-17.png" COMP;
+	 image: "a-18.png" COMP;
+	 image: "a-19.png" COMP;
+	 image: "a-20.png" COMP;
+	 image: "a-21.png" COMP;
+	 image: "a-22.png" COMP;
+	 image: "a-23.png" COMP;
+	 image: "a-24.png" COMP;
+      }
+      parts {
+	 part { name: "base";
+	    type: RECT;
+	    description { state: "default" 0.0;
+	       color: 0 0 0 205;
+	    }
+	 }
+	 part { name: "busy";
+	    mouse_events: 0;
+	    description { state: "default" 0.0;
+	       image.normal: "a-24.png";
+	       image.tween: "a-01.png";
+	       image.tween: "a-02.png";
+	       image.tween: "a-03.png";
+	       image.tween: "a-04.png";
+	       image.tween: "a-05.png";
+	       image.tween: "a-06.png";
+	       image.tween: "a-07.png";
+	       image.tween: "a-08.png";
+	       image.tween: "a-09.png";
+	       image.tween: "a-10.png";
+	       image.tween: "a-11.png";
+	       image.tween: "a-12.png";
+	       image.tween: "a-13.png";
+	       image.tween: "a-14.png";
+	       image.tween: "a-15.png";
+	       image.tween: "a-16.png";
+	       image.tween: "a-17.png";
+	       image.tween: "a-18.png";
+	       image.tween: "a-19.png";
+	       image.tween: "a-20.png";
+	       image.tween: "a-21.png";
+	       image.tween: "a-22.png";
+	       image.tween: "a-23.png";
+	       min: 57 56;
+	       max: 57 56;
+	       align: 0.5 0.5;
+	    }
+	 }
+	 part { name: "e.text.title";
+	    mouse_events: 0;
+	    type: TEXT;
+	    mouse_events: 0;
+	    description { state: "default" 0.0;
+	       align: 0.5 0.0;
+	       rel1.to: "busy";
+	       rel1.relative: 0.5 1.0;
+	       rel1.offset: 0 4;
+	       rel2.to: "busy";
+	       rel2.relative: 0.5 1.0;
+	       rel2.offset: 0 4;
+	       color: 255 255 255 255;
+	       text {
+		  font: "Liberation-Bold";
+		  text: "LOADING";
+		  size: 16;
+		  align: 0.5 0.0;
+		  min: 1 1;
+	       }
+	    }
+	 }
+      }
+      programs {
+	 program { name: "go1";
+	    signal: "show";
+	    source: "";
+	    action: STATE_SET "default" 0.0;
+	    transition: LINEAR 2.0;
+	    target: "busy";
+	    after:  "go1";
+	 }
+	 program { name: "up";
+	    signal: "mouse,up,1";
+	    source: "base";
+            action: SIGNAL_EMIT "e,action,do,select" "";
+	 }
+      }
+   }
+
 }
 
