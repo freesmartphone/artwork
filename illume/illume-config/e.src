@@ -1,7 +1,7 @@
 group "E_Config" struct {
   value "config_version" int: 65828;
   value "show_splash" int: 1;
-  value "init_default_theme" string: "illume_init.edj";
+  value "init_default_theme" string: "fso_init.edj";
   value "desktop_default_name" string: "Desktop %i, %i";
   value "menus_scroll_speed" double: 1000.0000000000000000000000000;
   value "menus_fast_mouse_move_threshhold" double: 300.0000000000000000000000000;
@@ -66,7 +66,7 @@ group "E_Config" struct {
   group "themes" list {
     group "E_Config_Theme" struct {
       value "category" string: "theme";
-      value "file" string: "illume.edj";
+      value "file" string: "fso.edj";
     }
   }
   group "key_bindings" list {
