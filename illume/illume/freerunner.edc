@@ -16,7 +16,7 @@ images {
 	 part { name: "base";
 //	    type: RECT;
 	    description { state: "default" 0.0;
-           image.normal: "background.png";
+	    image.normal: "background.png";
 	    }
 	 }
       }
@@ -615,6 +615,10 @@ images {
 	     new Float:val;
 	     val = getfarg(2);
 	     set_state(PART:"battery", "default", val);
+	     if (val <= 0.1)
+	       set_state(PART:"battery_base", "empty", val);
+	     else
+	       set_state(PART:"battery_base", "default", val);
 	  }
        }
       }
@@ -651,12 +655,16 @@ images {
 	       rel1.to: "base";
 	       rel2.to: "base";
 	    }
+	    description { state: "empty" 0.0;
+	       inherit: "default" 0.0;
+	       color: 255 0 0 176;
+	    }
 	 }
 	 part { name: "battery";
 	    mouse_events: 0;
 	    clip_to: "battery_clip";
 	    description { state: "default" 0.0;
-	       color: 255 255 255 176;
+	       color: 255 0 0 176;
 	       image.normal: "bt_0.png";
 	       rel1.to: "battery_base";
 	       rel1.offset: 4 2;
@@ -666,18 +674,22 @@ images {
 	    description { state: "default" 0.25;
 	       inherit: "default" 0.0;
 	       image.normal: "bt_1.png";
+	       color: 255 0 0 176;
 	    }
 	    description { state: "default" 0.5;
 	       inherit: "default" 0.0;
 	       image.normal: "bt_2.png";
+	       color: 255 255 255 176;
 	    }
 	    description { state: "default" 0.75;
 	       inherit: "default" 0.0;
 	       image.normal: "bt_3.png";
+	       color: 255 255 255 176;
 	    }
 	    description { state: "default" 1.0;
 	       inherit: "default" 0.0;
 	       image.normal: "bt_4.png";
+	       color: 255 255 255 176;
 	    }
 	 }
 	 part { name: "power";
@@ -1246,7 +1258,7 @@ images {
 	    type: RECT;
 	    mouse_events: 0;
 	    description { state: "default" 0.0;
-	       color: 100 100 200 255;
+	       color: 0 255 0 255;
 	       visible: 0;
 	       rel1.relative: 0.0 0.5;
 	       rel2.relative: 1.0 0.5;
@@ -1307,6 +1319,7 @@ images {
 	 }
 	 part { name: "event";
 	    type: RECT;
+	    ignore_flags: ON_HOLD;
 	    description {
 	       state: "default" 0.0;
 	       color: 0 0 0 0;
@@ -1332,8 +1345,8 @@ images {
 	    }
  */
 	    program {
-	       name: "active";
-	       signal: "mouse,down,1";
+	       name: "active-ilist";
+	       signal: "mouse,up,1";
 	       source: "event";
 	       action: STATE_SET "active" 0.0;
 	       transition: LINEAR 0.1666;
@@ -1379,9 +1392,9 @@ images {
 //      data.item: "shaped" "1";
       parts {
 	 part { name: "base";
-        type: RECT;
+	    type: RECT;
 	    description { state: "default" 0.0;
-        color: 0 0 0 255;
+	       color: 0 0 0 255;
 	    }
 	 }
 	 
@@ -1587,7 +1600,7 @@ images {
 	    type: TEXT;
 	    mouse_events: 0;
             description { state: "default" 0.0;
-           visible: 1;
+	       visible: 1;
 //	       visible: 0; // sean wants it gone. don't look at me.
 	       align: 0.0 1.0;
 	       fixed: 1 1;
@@ -1806,7 +1819,7 @@ images {
 
 /////////////////////////////////////////////////////////////////////////////
    /*** ILLUME: BUSYWIN ***/
-
+/*
    group { name: "e/modules/busywin/base/default";
       images {
 	 image: "busy-1.png" COMP;
@@ -1887,7 +1900,8 @@ images {
 	 }
       }
    }
-
+*/
+   
 /////////////////////////////////////////////////////////////////////////////
    /*** ILLUME: KBD ***/
 
@@ -2029,7 +2043,17 @@ images {
 	       color: 0 0 0 0;
 	    }
 	    description { state: "active" 0.0;
+	       color: 100 100 100 128;
+	    }
+	 }
+	 part { name: "base2";
+	    type: RECT;
+	    mouse_events: 0;
+	    description { state: "default" 0.0;
 	       color: 0 0 0 0;
+	    }
+	    description { state: "active" 0.0;
+	       color: 255 255 255 128;
 	    }
 	 }
 	 part { name: "e.text.label";
@@ -2045,25 +2069,37 @@ images {
 		  min: 1 1;
 	       }
 	    }
+	    description { state: "active" 0.0;
+	       inherit: "default" 0.0;
+	       color: 255 255 255 255;
+	    }
 	 }
       }
       programs {
 	 program { name: "select";
-	    signal: "mouse,down,1";
+	    signal: "mouse,up,1";
 	    source: "base";
             action: SIGNAL_EMIT "e,action,do,select" "";
+	 }
+	 program { name: "default";
+	    signal: "e,state,selected";
+	    source: "e";
+            action: STATE_SET "active" 0.0;
+	    target: "base";
 	 }
 	 program { name: "select2";
 	    signal: "mouse,down,1";
 	    source: "base";
             action: STATE_SET "active" 0.0;
-	    target: "base";
+	    target: "base2";
+	    target: "e.text.label";
 	 }
 	 program { name: "select3";
 	    signal: "mouse,up,1";
 	    source: "base";
             action: STATE_SET "default" 0.0;
-	    target: "base";
+	    target: "base2";
+	    target: "e.text.label";
 	 }
       }
    }
@@ -2324,13 +2360,20 @@ images {
 	 image: "box.png" COMP;
       }
       parts {
-	 part { name: "icon_overlay";
+         part { name: "base";
 	    type: RECT;
+	    mouse_events: 0;
 	    description { state: "default" 0.0;
-	       color: 0 0 0 0;
+	       color: 0 255 0 255;
+	       visible: 0;
+	       rel1.relative: 0.0 0.5;
+	       rel2.relative: 1.0 0.5;
 	    }
 	    description { state: "active" 0.0;
-	       color: 100 100 200 255;
+	       inherit: "default" 0.0;
+	       visible: 1;
+	       rel1.relative: 0.0 0.0;
+	       rel2.relative: 1.0 1.0;
 	    }
 	 }
 	 part { name: "icon_box";
@@ -2458,6 +2501,7 @@ images {
 	    name:          "icon_event";
 	    type:          RECT;
 	    mouse_events:  1;
+            ignore_flags: ON_HOLD;
 	    description {
 	       state:      "default" 0.0;
 	       color:      0 0 0 0;
@@ -2471,7 +2515,6 @@ images {
 	    source: "e";
 	    action: STATE_SET "active" 0.0;
 	    target: "e.text.label";
-	    target: "icon_overlay";
 	    target: "icon_box";
 	 }
 	 program {
@@ -2480,8 +2523,21 @@ images {
 	    source: "e";
 	    action: STATE_SET "default" 0.0;
 	    target: "e.text.label";
-	    target: "icon_overlay";
 	    target: "icon_box";
+	 }
+	 program {
+	    name: "active-ilist";
+	    signal: "mouse,up,1";
+	    source: "icon_event";
+	    action: STATE_SET "active" 0.0;
+	    transition: LINEAR 0.1666;
+	    target: "base";
+	    after: "active2";
+	 }
+	 program {
+	    name: "active2";
+	    action:  STATE_SET "default" 0.0;
+	    target:  "base";
 	 }
       }
    }
@@ -2580,7 +2636,7 @@ images {
 	 part { name: "check-in";
 	    type: RECT;
 	    description { state: "default" 0.0;
-	       color: 100 100 200 0;
+	       color: 0 255 0 0;
 	       rel1.to: "check";
 	       rel1.offset: 8 8;
 	       rel2.to: "check";
@@ -2588,7 +2644,7 @@ images {
 	    }
 	    description { state: "active" 0.0;
 	       inherit: "default" 0.0;
-	       color: 100 100 200 255;
+	       color: 0 255 0 255;
 	    }
 	 }
 	 part { name: "e.text.label";
@@ -2695,7 +2751,7 @@ images {
 	 part { name: "check-in";
 	    type: RECT;
 	    description { state: "default" 0.0;
-	       color: 100 100 200 0;
+	       color: 0 255 0 0;
 	       rel1.to: "check";
 	       rel1.offset: 8 8;
 	       rel2.to: "check";
@@ -2703,7 +2759,7 @@ images {
 	    }
 	    description { state: "active" 0.0;
 	       inherit: "default" 0.0;
-	       color: 100 100 200 255;
+	       color: 0 255 0 255;
 	    }
 	 }
 	 part { name: "e.text.label";
@@ -2878,7 +2934,7 @@ images {
 		  relative: 0.0 1.0;
 		  offset: -1 -1;
 	       }
-	       color: 100 100 200 255;
+	       color: 0 255 0 255;
 	    }
 	    description { state: "pulse" 1.0;
 	       inherit: "default" 0.0;
@@ -3036,6 +3092,11 @@ images {
 	     val = getfarg(2);
 	     set_state(PART:"gsm", "default", val);
 	  }
+	  if ((type == MSG_STRING) && (id == 1)) {
+	     new val[100];
+	     getsarg(2, val, 100);
+	     set_text(PART:"e.text.label", val);
+	  }
        }
       }
       parts {
@@ -3045,6 +3106,20 @@ images {
 	       color: 0 0 0 0;
 	       rel1.offset: 2 4;
 	       rel2.offset: -3 -5;
+	    }
+	 }
+	 part { name: "e.text.label";
+	    type: TEXT;
+	    mouse_events: 0;
+	    description { state: "default" 0.0;
+	       color: 176 176 176 255;
+	       align: 1.0 0.0;
+	       text {
+		  align: 1.0 0.0;
+		  font: "Liberation-Bold";
+		  size: 10;
+		  min: 1 1;
+	       }
 	    }
 	 }
 	 part { name: "nogsm";
@@ -3434,6 +3509,12 @@ images {
 	 image: "a-22.png" COMP;
 	 image: "a-23.png" COMP;
 	 image: "a-24.png" COMP;
+	 image: "a-25.png" COMP;
+	 image: "a-26.png" COMP;
+	 image: "a-27.png" COMP;
+	 image: "a-28.png" COMP;
+	 image: "a-29.png" COMP;
+	 image: "a-30.png" COMP;
       }
       parts {
 	 part { name: "base";
@@ -3445,7 +3526,7 @@ images {
 	 part { name: "busy";
 	    mouse_events: 0;
 	    description { state: "default" 0.0;
-	       image.normal: "a-24.png";
+	       image.normal: "a-30.png";
 	       image.tween: "a-01.png";
 	       image.tween: "a-02.png";
 	       image.tween: "a-03.png";
@@ -3469,8 +3550,14 @@ images {
 	       image.tween: "a-21.png";
 	       image.tween: "a-22.png";
 	       image.tween: "a-23.png";
-	       min: 57 56;
-	       max: 57 56;
+	       image.tween: "a-24.png";
+	       image.tween: "a-25.png";
+	       image.tween: "a-26.png";
+	       image.tween: "a-27.png";
+	       image.tween: "a-28.png";
+	       image.tween: "a-29.png";
+	       min: 65 65;
+	       max: 65 65;
 	       align: 0.5 0.5;
 	    }
 	 }
