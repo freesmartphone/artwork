@@ -460,7 +460,7 @@ group "E_Config" struct {
   value "display_res_height" int: 1;
   value "display_res_hz" int: 0;
   value "display_res_rotation" int: 0;
-  value "screensaver_enable" int: 1;
+  value "screensaver_enable" int: 0;
   value "screensaver_timeout" int: 30;
   value "screensaver_interval" int: 5;
   value "screensaver_blanking" int: 2;
