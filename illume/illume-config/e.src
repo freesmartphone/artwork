@@ -85,7 +85,7 @@ group "E_Config" struct {
       value "modifiers" int: 0;
       value "key" string: "Execute";
       value "action" string: "delayed_action";
-      value "params" string: "[0.0 exec dbus-send --system --dest=org.openmoko.Power / org.openmoko.Power.Core.RequestResourceState string:cpu string:illume-cmdline string:off] [2.0 halt_now]";
+      value "params" string: "[0.0 exec dbus-send --system --dest=org.openmoko.Power / org.openmoko.Power.Core.RequestResourceState string:cpu string:illume-cmdline string:off] [5.0 halt_now]";
       value "any_mod" uchar: 1;
     }
   }
