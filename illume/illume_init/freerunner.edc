@@ -1,6 +1,5 @@
 images {
-   image: "boots.png" LOSSY 80;
-   image: "yingyang-small.png" LOSSY 80;
+   image: "background.png" LOSSY 80;
 }
 
 collections {
@@ -10,10 +9,9 @@ collections {
 	    description { state: "default" 0.0;
 	       aspect: 0.75 0.75;
 	       aspect_preference: NONE;
-	       image.normal: "boots.png";
+	       image.normal: "background.png";
 	    }
-	 }
-         
+	 }       
 	 part { name: "bar_bg";
 	    type: RECT;
 	    description { state: "default" 0.0;
@@ -23,54 +21,10 @@ collections {
 	    }
 	    description { state: "visible" 0.0;
 	       inherit: "default" 0.0;
-	       rel1.relative: 0.0 0.4;
-	       rel2.relative: 1.0 0.6;
+	       rel1.relative: 0.0 0.8;
+	       rel2.relative: 1.0 1.0;
 	    }
 	 }
-	 part { name: "bar";
-	    description { state: "default" 0.0;
-	       rel1.to: "bar_bg";
-	       rel2 {
-		  to_x: "exquisite.progress";
-		  to_y: "bar_bg";
-		  relative: 1.0 1.0;
-		  offset: -1 -1;
-          }
-          aspect: 0.75 0.75;
-          aspect_preference: NONE;
-          image.normal: "yingyang-small.png";
-	    }
-	    description { state: "pulse" 1.0;
-	       inherit: "default" 0.0;
-	       rel1 {
-		  to: "bar_bg";
-		  relative: 0.0 0.0;
-		  offset: 0 0;
-	       }
-	       rel2 {
-		  to: "bar_bg";
-		  relative: 0.15 1.0;
-		  offset: -1 -1;
-          }
-          aspect: 0.75 0.75;
-          aspect_preference: NONE;
-          image.normal: "yingyang-small.png";
-	    }
-	    description { state: "pulse" 0.0;
-	       inherit: "pulse" 1.0;
-	       rel1 {
-		  to: "bar_bg";
-		  relative: 0.86 0.0;
-		  offset: 0 0;
-	       }
-	       rel2 {
-		  to: "bar_bg";
-		  relative: 1.0 1.0;
-		  offset: -1 -1;
-	       }				
-	    }
-	 }
-	 
 	 part { name: "exquisite.progress";
 	    mouse_events: 0;
 	    type: RECT;
@@ -109,16 +63,6 @@ collections {
       }
       
       programs {
-	 program {
-	    name: "logo-anim";
-	    in: 0.5 0.0;
-	    signal: "show";
-	    source: "";
-	    action: STATE_SET "visible" 0.0;
-	    target: "bar_bg";
-	    transition: DECELERATE 1.0;
-	    after: "pulsate";
-	 }
 	 
 	 program {
 	    name: "exit";
@@ -134,33 +78,5 @@ collections {
 	    action: SIGNAL_EMIT "e,state,done_ok" "e";
 	 }
 	 
-	 program {
-	    name: "pulsate";
-	    action: STATE_SET "pulse" 1.0;
-	    target: "bar";
-	    after: "pulsate2";
-	 }
-	 program {
-	    name: "pulsate2";
-	    action: STATE_SET "pulse" 0.0;
-	    target: "bar";
-	    transition: SINUSOIDAL 0.8;
-	    after: "pulsate3";
-	 }
-	 program {
-	    name: "pulsate3";
-	    action: STATE_SET "pulse" 1.0;
-	    target: "bar";
-	    transition: SINUSOIDAL 0.8;
-	    after: "pulsate2";
-	 }
-	 
-	 program {
-	    name: "pulsate_stop";
-	    action: ACTION_STOP;
-	    target: "pulsate2";
-	    target: "pulsate3";
-	 }
-      }
    }
 }
